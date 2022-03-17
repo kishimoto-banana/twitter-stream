@@ -10,4 +10,3 @@ COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-root --no-dev
 
 COPY ./src ./src
-CMD ["poetry", "run", "python", "src/main.py"]

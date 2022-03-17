@@ -1,9 +1,14 @@
 TAG := twitter-stream
-DOCKER_CMD := docker
+DOCKER_CMD := docker-compose
 
 build:
-	${DOCKER_CMD} build . -t ${TAG}
+	${DOCKER_CMD} build
 
 run:
-	${DOCKER_CMD} run --mount type=bind,source=${PWD}/data,destination=/app/data \
-	-it --env-file .env -e TZ=Asia/Tokyo ${TAG}
+	${DOCKER_CMD} up -d
+
+stop:
+	${DOCKER_CMD} stop
+
+logs-app:
+	${DOCKER_CMD} logs -f app 

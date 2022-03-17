@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 import tweepy
+from pymongo import MongoClient
 from tweepy.tweet import Tweet as tweepyTweet
 
 
@@ -42,6 +43,23 @@ class TweetSqlite(TweetRepository):
         self.conn.commit()
 
 
+class TweetMongodb(TweetRepository):
+    def __init__(self):
+        self.client = MongoClient("mongodb://root:example@mongo:27017/")
+        self.db = self.client.tweet_db
+        self.collection = self.db.tweets
+
+    def write_tweet(self, tweet: Tweet):
+        post = {
+            "tweet_id": tweet.id,
+            "text": tweet.text,
+            "language": tweet.language,
+            "tweeted_at": tweet.created_at,
+            "created_at": datetime.utcnow(),
+        }
+        self.collection.insert_one(post)
+
+
 class TweetStream(tweepy.StreamingClient):
     def __init__(self, bearer_token: str, tweet_repo: TweetRepository):
         super().__init__(bearer_token)
@@ -66,7 +84,7 @@ class TweetStream(tweepy.StreamingClient):
 
 def main():
     bearer_token = os.environ["BEARER_TOKEN"]
-    tweet_repo = TweetSqlite()
+    tweet_repo = TweetMongodb()
     listener = TweetStream(bearer_token, tweet_repo)
     try:
         print("listen stream")
