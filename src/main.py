@@ -79,7 +79,7 @@ class TweetStream(tweepy.StreamingClient):
 
     # TODO: エラーハンドリングちゃんとやりましょうね
     def on_errors(self, errors):
-        print(errors)
+        print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} {errors}")
 
 
 def main():
