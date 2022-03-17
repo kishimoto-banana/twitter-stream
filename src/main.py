@@ -31,6 +31,7 @@ class TweetSqlite(TweetRepository):
         )
 
     def __del__(self):
+        print("sqlite connection close")
         self.conn.close()
 
     def write_tweet(self, tweet: Tweet):
@@ -56,7 +57,7 @@ class TweetStream(tweepy.StreamingClient):
         try:
             self.tweet_repo.write_tweet(tweet)
         except Exception as e:
-            print(f"database: {e}")
+            print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} database: {e}")
 
     def on_errors(self, errors):
         print(errors)
@@ -70,7 +71,7 @@ def main():
         print("listen stream")
         listener.sample(tweet_fields=["created_at", "lang"], place_fields=["geo"])
     except Exception as e:
-        print(e)
+        print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} {e}")
 
 
 if __name__ == "__main__":
