@@ -30,6 +30,9 @@ class TweetSqlite(TweetRepository):
             "CREATE TABLE IF NOT EXISTS tweets(id INTEGER PRIMARY KEY AUTOINCREMENT, tweet_id TEXT, text TEXT, language Text, tweeted_at TEXT, created_at TEXT DEFAULT CURRENT_TIMESTAMP)"
         )
 
+    def __del__(self):
+        self.conn.close()
+
     def write_tweet(self, tweet: Tweet):
         self.cur.execute(
             "INSERT INTO tweets(tweet_id, text, language, tweeted_at) values(?, ?, ?, ?)",
@@ -68,8 +71,6 @@ def main():
         listener.sample(tweet_fields=["created_at", "lang"], place_fields=["geo"])
     except Exception as e:
         print(e)
-    finally:
-        tweet_repo.conn.close()
 
 
 if __name__ == "__main__":
