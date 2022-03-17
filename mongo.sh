@@ -9,7 +9,7 @@ dump() {
 
 restore() {
   echo "restore"
-  docker cp ./dump mongo:/dump
+  docker cp ./dump mongo:/
   docker exec -i mongo /usr/bin/mongorestore --username root --password example --authenticationDatabase admin -d tweet_db -c tweets --dir /dump/tweet_db/tweets.bson
 }
 
