@@ -143,3 +143,4 @@ cython_debug/
 .env
 mongo_db/
 snapshot/
+dump/

@@ -11,4 +11,10 @@ stop:
 	${DOCKER_CMD} stop
 
 logs-app:
-	${DOCKER_CMD} logs -f app 
+	${DOCKER_CMD} logs -f app
+
+dump:
+	./mongo.sh dump
+
+restore:
+	./mongo.sh restore
