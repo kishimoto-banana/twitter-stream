@@ -59,6 +59,7 @@ class TweetStream(tweepy.StreamingClient):
         except Exception as e:
             print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} database: {e}")
 
+    # TODO: エラーハンドリングちゃんとやりましょうね
     def on_errors(self, errors):
         print(errors)
 
